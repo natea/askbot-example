@@ -1,0 +1,116 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Create database for Askbot &mdash; Askbot v0.6 documentation</title>
+    <link rel="stylesheet" href="_static/traditional.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="Askbot v0.6 documentation" href="index.html" />
+    <link rel="next" title="Initial Configuration of Askbot" href="initial-configuration.html" />
+    <link rel="prev" title="Installing Askbot" href="install.html" /> 
+  </head>
+  <body>
+<div class="ab-proj-header">
+    <ul>
+        <li class="first"><a href="/">Home (forum)</a>
+        <span class="sep">|</span>
+        </li>
+        
+        <li><a href="/doc/index.html">Documentation</a></li>
+        
+    </ul>
+</div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="create-database-for-askbot">
+<span id="create-database"></span><h1>Create database for Askbot<a class="headerlink" href="#create-database-for-askbot" title="Permalink to this headline">¶</a></h1>
+<p>Askbot has been successfully tested with <cite>MySQL</cite> and <cite>PostgresQL</cite> databases.</p>
+<div class="section" id="mysql">
+<h2>MySQL<a class="headerlink" href="#mysql" title="Permalink to this headline">¶</a></h2>
+<p>This section assumes that MySQL is installed and is up and running.</p>
+<p>Database can be prepared via your hosting control panel, if available, or
+can be created manually as shown below (using a high privilege MySQL account):</p>
+<p>Log in to mysql:</p>
+<div class="highlight-python"><pre>mysql -u username -p</pre>
+</div>
+<p>Then type these two commands (note that fake <cite>dbname</cite>, <cite>dbuser</cite>, and <cite>dbpassword</cite> are used in this example):</p>
+<div class="highlight-python"><pre>create database askbot DEFAULT CHARACTER SET UTF8 COLLATE utf8_general_ci;
+grant all privileges on dbname.* to dbuser@localhost identified by 'dbpassword';</pre>
+</div>
+<p>Again, please remember to create real usernname, database name and password and write them down. These
+credentials will go into the file <a class="reference external" href="http://github.com/ASKBOT/askbot-devel/blob/master/askbot/setup_templates/settings.py">settings.py</a> - the main configuration file of the Django application.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Notation <cite>dbuser&#64;hostname</cite> is important for security - normally you want to restrict access to
+the database to certain hosts only. <cite>localhost</cite> entry ensures that database cannot be accessed
+from remote hosts at all.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Create database for Askbot</a><ul>
+<li><a class="reference internal" href="#mysql">MySQL</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="install.html"
+                        title="previous chapter">Installing Askbot</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="initial-configuration.html"
+                        title="next chapter">Initial Configuration of Askbot</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2010, Askbot Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

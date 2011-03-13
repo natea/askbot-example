@@ -1,0 +1,104 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Enabling MathJax in Askbot &mdash; Askbot v0.6 documentation</title>
+    <link rel="stylesheet" href="_static/traditional.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="Askbot v0.6 documentation" href="index.html" /> 
+  </head>
+  <body>
+<div class="ab-proj-header">
+    <ul>
+        <li class="first"><a href="/">Home (forum)</a>
+        <span class="sep">|</span>
+        </li>
+        
+        <li><a href="/doc/index.html">Documentation</a></li>
+        
+    </ul>
+</div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="enabling-mathjax-in-askbot">
+<span id="enable-mathjax"></span><h1>Enabling MathJax in Askbot<a class="headerlink" href="#enabling-mathjax-in-askbot" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://www.mathjax.org/">MathJax</a> is a rendering engine for mathematical
+expressions (based on cross-browser javascript code). On a MathJax-enabled site, such as Askbot you can display
+perfectly formatted mathematical formulae.</p>
+<p>However, MathJax distribution is very large and is not shipped with Askbot.</p>
+<p>To enable MathJax on your site, please do the following:</p>
+<p>Decide where you want to store mathjax (e.g. to share it with other applications as well):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">cd</span> <span class="o">/</span><span class="n">some</span><span class="o">/</span><span class="n">directory</span>
+</pre></div>
+</div>
+<p>Follow <a class="reference external" href="http://www.mathjax.org/resources/docs/?installation.html">mathjax installation instructions</a></p>
+<p>Edit webserver configuration so that url <cite>http://example.com/mathjax</cite>
+points to that directory and file <cite>MathJax.js</cite> is available at
+<cite>http://example.com/mathjax/MathJax.js</cite>.</p>
+<p>For Apache, a following line in the configuration file (maybe within a VirtualHost section) will do:</p>
+<div class="highlight-python"><pre>Alias /mathjax/ /filesystem/path/to/mathjax/</pre>
+</div>
+<p>Finally, enable MathJax in Askbot: &#8220;settings&#8221; -&gt; &#8220;Markup formatting&#8221;, check &#8220;Enable MathJax&#8221; and
+enter url <cite>http://example.com/mathjax</cite> (link &#8220;settings&#8221; is available to site administrators in the upper right corner of the forum pages).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">your actual forum site must be served from the <strong>same domain and subdomain</strong>
+as mathjax. This is <strong>very important</strong> for Firefox and some other browsers adhering
+to the <a class="reference external" href="http://en.wikipedia.org/wiki/Same_origin_policy">same origin policy</a> for the browser cookies. Mathjax does use cookies to
+store math display settings.</p>
+</div>
+<p>One day enabling MathJax will be even easier, but <a class="reference external" href="http://bugs.askbot.org/issues/27">some more work</a> needs to be done for this to happen.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2010, Askbot Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

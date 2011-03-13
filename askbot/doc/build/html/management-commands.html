@@ -1,0 +1,289 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Askbot management commands &mdash; Askbot v0.6 documentation</title>
+    <link rel="stylesheet" href="_static/traditional.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="Askbot v0.6 documentation" href="index.html" />
+    <link rel="prev" title="Import other forums into Askbot" href="import-data.html" /> 
+  </head>
+  <body>
+<div class="ab-proj-header">
+    <ul>
+        <li class="first"><a href="/">Home (forum)</a>
+        <span class="sep">|</span>
+        </li>
+        
+        <li><a href="/doc/index.html">Documentation</a></li>
+        
+    </ul>
+</div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="askbot-management-commands">
+<h1>Askbot management commands<a class="headerlink" href="#askbot-management-commands" title="Permalink to this headline">¶</a></h1>
+<p>There are a number of command line utilities help the forum administrator
+perform a range of tasks such as add or revoke administration privileges, back up and restore
+the forum data, fix database errors if such occur, etc.</p>
+<p>To run these commands there is a general pattern:</p>
+<div class="highlight-python"><pre>cd project_directory
+python manage.py some_command [possible arguments and parameters]</pre>
+</div>
+<p>I.e. the commands are generally run from the project directory (the same
+one that contains your settings.py file) and they may use additional parameters and options.</p>
+<div class="section" id="data-and-user-administration-commands">
+<h2>Data and User administration commands<a class="headerlink" href="#data-and-user-administration-commands" title="Permalink to this headline">¶</a></h2>
+<p>The bulk of the management commands fall into this group and will probably be the most frequently used.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="35%" />
+<col width="65%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">command</th>
+<th class="head">purpose</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><cite>add_admin &lt;user_id&gt;</cite></td>
+<td>Turn user into an administrator
+<cite>&lt;user_id&gt;</cite> is a numeric user id of the account</td>
+</tr>
+<tr><td><cite>remove_admin &lt;user_id&gt;</cite></td>
+<td>Remove admin status from a user account - the opposite of
+the <cite>add_admin</cite> command</td>
+</tr>
+<tr><td><cite>add_askbot_user &#8211;user-name
+&#8211;email [&#8211;password]
+[&#8211;email-frequency]</cite></td>
+<td>Create a user account. If password is not given, an
+unusable password will be set. Possible values for the
+&#8211;email-frequency are: <strong>i</strong>, <strong>d</strong>, <strong>w</strong>, <strong>n</strong>
+that stand for
+instant, daily, weekly and never - respectively. The default
+value is w. The command does not create associations with
+any of the external login providers.</td>
+</tr>
+<tr><td><cite>dump_forum [&#8211;dump-name
+some_name]</cite></td>
+<td>Save forum contents into a file. <cite>&#8211;dump-name</cite> parameter is
+optional</td>
+</tr>
+<tr><td><cite>get_tag_stats [-u|-t] [-e]</cite></td>
+<td>Print tag subscription statistics, per tag (option -t)
+or per user (option -u), if option -e is given, empty
+records will be shown too (longer versions of the options
+are: &#8211;per-tag-subscription-counts for -t,
+&#8211;per-user-tag-subscription-counts for -u, and &#8211;print-empty
+for -e).</td>
+</tr>
+<tr><td><cite>load_forum &lt;file_name&gt;</cite></td>
+<td>Load forum data from a file saved by the <cite>dump_forum</cite>
+command</td>
+</tr>
+<tr><td><cite>load_stackexchange &lt;file.zip&gt;</cite></td>
+<td>Load SackExchange dump into Askbot. It is best to run this
+command on empty database. Also - before running, make sure
+that <cite>askbot.importers.stackexchange</cite> is in the list of
+installed apps within your settings.py file (it might also
+be necessary to run <cite>syncdb</cite> command to initiate the
+SE importer tables).</td>
+</tr>
+<tr><td><cite>rename_tags &#8211;from &lt;from_tags&gt;
+&#8211;to &lt;to_tags&gt; &#8211;user-id
+&lt;user_id&gt;</cite></td>
+<td>Rename, merge or split tags. User ID is the id of the user
+who will be assigned as the performer of the retag action.
+If more than is in the <cite>&#8211;from</cite> or the <cite>&#8211;to</cite> parameters
+then that parameter quoted, e.g. <a href="#id1"><span class="problematic" id="id2">`</span></a>&#8211;to &#8220;tag1 tag2&#8221;.
+If user id is not given, the administrator with the smallest
+id number will be automatically assigned.</td>
+</tr>
+<tr><td><cite>rename_tags_id &#8211;from
+&lt;from_tag_ids&gt; &#8211;to
+&lt;to_tag_ids&gt; &#8211;user_id
+&lt;user_id&gt;</cite></td>
+<td>This command is the same as <cite>rename_tags</cite>, but takes the tag
+id&#8217;s as arguments.</td>
+</tr>
+<tr><td><cite>delete_unused_tags</cite></td>
+<td>Permanently deletes tags that do not appear in any questions
+, including the questions that are themselves
+marked as deleted.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="batch-jobs">
+<h2>Batch jobs<a class="headerlink" href="#batch-jobs" title="Permalink to this headline">¶</a></h2>
+<p>Batch jobs are those that should be run periodically. A program called <cite>cron</cite> can run these commands at the specified times (please look up futher information about <cite>cron</cite> elsewhere).</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="73%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">command</th>
+<th class="head">purpose</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><cite>send_email_alerts</cite></td>
+<td>Dispatches email alerts to the users according to
+their subscription settings. This command does not
+send iinstant&#8221; alerts because those are sent automatically
+and do not require a separate command.
+The most frequent alert setting that can be served by this
+command is &#8220;daily&#8221;, therefore running <cite>send_email_alerts</cite>
+more than twice a day is not necessary.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="data-repair-commands">
+<h2>Data repair commands<a class="headerlink" href="#data-repair-commands" title="Permalink to this headline">¶</a></h2>
+<p>Under certain circumstances (especially when using MySQL database with MyISAM
+storage engine or when venturing to adapt the software to your needs) some
+records in the database tables may become internally inconsistent.
+The commands from this section will help fix those issues.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Data inconsistency in the Askbot project is considered as a critical error and as a matter of
+the project policy is addressed on the day of reporting. If you discover such issue - please
+report it at the forum or by email at <cite>admin&#64;askbot.org</cite></p>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="66%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">command</th>
+<th class="head">purpose</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><cite>add_missing_subscriptions</cite></td>
+<td>adds default values of email subscription settings to users
+that lack them</td>
+</tr>
+<tr><td><cite>fix_answer_counts</cite></td>
+<td>recalculates answer counts for all questions</td>
+</tr>
+<tr><td><cite>fix_inbox_counts</cite></td>
+<td>recalculates response counts in the user inboxes</td>
+</tr>
+<tr><td><cite>fix_revisionless_posts</cite></td>
+<td>adds a revision record to posts that lack them</td>
+</tr>
+<tr><td><cite>fix_question_tags</cite></td>
+<td>takes tag names from the record on the question table
+and stores them in the tag table. This defect may show when
+the server process is interrupted after the question was
+saved, but tags were not updated, and the symptom is that
+the question cannot be found via the tag search.</td>
+</tr>
+</tbody>
+</table>
+<p>The above commands are safe to run at any time, also they do not require
+additional parameters. In the future all these will be replaced with just one simple command.</p>
+</div>
+<div class="section" id="developer-commands">
+<h2>Developer commands<a class="headerlink" href="#developer-commands" title="Permalink to this headline">¶</a></h2>
+<p>Besides the commands designed to help run the forum, there are several aiming to help
+the developers of the Askbot project:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="66%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">command</th>
+<th class="head">purpose</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><cite>make_docs</cite></td>
+<td>Rebuild HTML documentation for the project</td>
+</tr>
+<tr><td><cite>jinja2_makemessages</cite></td>
+<td>Extract translatable strings into the <cite>.po</cite> files. Works
+exactly the same way as the django <cite>makemessages</cite> command
+but extracts strings from Jinja2 templates that are used
+by the Askbot project. <strong>Note:</strong> the <cite>jinja2_makemessages</cite>
+must be run from the <cite>askbot</cite> app directory, unlike all the
+remaining commands that are expected to be run from the
+site root directory.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Askbot management commands</a><ul>
+<li><a class="reference internal" href="#data-and-user-administration-commands">Data and User administration commands</a></li>
+<li><a class="reference internal" href="#batch-jobs">Batch jobs</a></li>
+<li><a class="reference internal" href="#data-repair-commands">Data repair commands</a></li>
+<li><a class="reference internal" href="#developer-commands">Developer commands</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="import-data.html"
+                        title="previous chapter">Import other forums into Askbot</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2010, Askbot Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

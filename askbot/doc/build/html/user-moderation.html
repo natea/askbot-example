@@ -1,0 +1,128 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>User moderation in Askbot &mdash; Askbot v0.6 documentation</title>
+    <link rel="stylesheet" href="_static/traditional.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="Askbot v0.6 documentation" href="index.html" /> 
+  </head>
+  <body>
+<div class="ab-proj-header">
+    <ul>
+        <li class="first"><a href="/">Home (forum)</a>
+        <span class="sep">|</span>
+        </li>
+        
+        <li><a href="/doc/index.html">Documentation</a></li>
+        
+    </ul>
+</div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="user-moderation-in-askbot">
+<h1>User moderation in Askbot<a class="headerlink" href="#user-moderation-in-askbot" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is a draft specification</p>
+</div>
+<div class="section" id="concepts">
+<h2>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h2>
+<p><strong>User status</strong>. The following user status levels are meaningful in askbot:</p>
+<ul class="simple">
+<li>administrator - user with moderation and administration privileges</li>
+<li>moderator - user with moderation privileges</li>
+<li>approved - user that can make full use of the forum</li>
+<li>watched - like approved user, except his/her contributions are not sent by email</li>
+<li>suspended - only can edit own existing posts and own profile, will see suspension message</li>
+<li>blocked - can&#8217;t do anything except send feedback, will see blocking message</li>
+</ul>
+<p>These status levels are mutually exclusive.</p>
+<p><strong>Admin panel</strong>. Each user has a sub/view of his/her account giving tools.</p>
+<p>Admin panel exposes moderation and administration tools. Note that there are some
+moderation tools located in other places (e.g. question views).</p>
+<p>If a user can see own admin panel, the panel will always be restricted in function, because
+it never makes to communicate by email with him/herself, etc.</p>
+<p><strong>Moderation tools</strong>:</p>
+<ul class="simple">
+<li>change user status in range from blocked to approved</li>
+<li>arbitrarily add/subtract reputation and leave a message</li>
+<li>send PM to user</li>
+<li>merge tags (tags view, )</li>
+<li>merge questions (need special tool - sticky selection in search?)</li>
+</ul>
+<p><strong>Restrictions on moderators</strong></p>
+<ul class="simple">
+<li>cannot moderate other moderators or admins, cannot access admin tools</li>
+</ul>
+<p><strong>Administration tools</strong>:</p>
+<ul class="simple">
+<li>edit user profiles</li>
+<li>change user status to moderators and remove it</li>
+<li>merge users</li>
+<li>delete accounts</li>
+<li>delete user contributions</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">User moderation in Askbot</a><ul>
+<li><a class="reference internal" href="#concepts">Concepts</a></li>
+</ul>
+</li>
+</ul>
+
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2010, Askbot Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

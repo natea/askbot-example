@@ -1,0 +1,100 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Import other forums into Askbot &mdash; Askbot v0.6 documentation</title>
+    <link rel="stylesheet" href="_static/traditional.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="Askbot v0.6 documentation" href="index.html" />
+    <link rel="next" title="Askbot management commands" href="management-commands.html" />
+    <link rel="prev" title="Deploying Askbot" href="deployment.html" /> 
+  </head>
+  <body>
+<div class="ab-proj-header">
+    <ul>
+        <li class="first"><a href="/">Home (forum)</a>
+        <span class="sep">|</span>
+        </li>
+        
+        <li><a href="/doc/index.html">Documentation</a></li>
+        
+    </ul>
+</div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="import-other-forums-into-askbot">
+<h1>Import other forums into Askbot<a class="headerlink" href="#import-other-forums-into-askbot" title="Permalink to this headline">¶</a></h1>
+<p>At this time only StackExchange import is supported.</p>
+<p>There are two ways to import your StackExchange dump into Askbot:</p>
+<ul>
+<li><p class="first">via the web at url <cite>/import-data/</cite>, relative to your forum installation</p>
+</li>
+<li><p class="first">using a management command:</p>
+<div class="highlight-python"><pre>python manage.py load_stackexchange /path/to/your-se-data.zip</pre>
+</div>
+</li>
+</ul>
+<p>Before importing the data, an entry <cite>askbot.importers.stackexchange</cite> must be added to
+the <cite>INSTALLED_APPS</cite> list in your <cite>settings.py</cite> file and a command <cite>python manage.py syncdb</cite> run
+to initialize the stackexchange tables.</p>
+<p>In the case your database is not empty at the beginning of the process - <strong>please do back it up</strong>.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="deployment.html"
+                        title="previous chapter">Deploying Askbot</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="management-commands.html"
+                        title="next chapter">Askbot management commands</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2010, Askbot Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

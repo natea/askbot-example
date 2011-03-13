@@ -1,0 +1,133 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installing Askbot &mdash; Askbot v0.6 documentation</title>
+    <link rel="stylesheet" href="_static/traditional.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="Askbot v0.6 documentation" href="index.html" />
+    <link rel="next" title="Create database for Askbot" href="create-database.html" />
+    <link rel="prev" title="Askbot Project Documentation" href="index.html" /> 
+  </head>
+  <body>
+<div class="ab-proj-header">
+    <ul>
+        <li class="first"><a href="/">Home (forum)</a>
+        <span class="sep">|</span>
+        </li>
+        
+        <li><a href="/doc/index.html">Documentation</a></li>
+        
+    </ul>
+</div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="installing-askbot">
+<span id="install"></span><h1>Installing Askbot<a class="headerlink" href="#installing-askbot" title="Permalink to this headline">¶</a></h1>
+<p>The latest stable version of askbot can be installed from the official <a class="reference external" href="http://pypi.python.org/pypi/askbot/">Python Package Index (PyPI)</a></p>
+<p>There are several methods to install Askbot. The recommended choice of the method depends on whether you are planning to modify the source code and/or templates or not.</p>
+<div class="section" id="would-like-to-use-the-package-as-is">
+<h2>Would like to use the package as is?<a class="headerlink" href="#would-like-to-use-the-package-as-is" title="Permalink to this headline">¶</a></h2>
+<p>If so - then the best tool for that is <cite>pip</cite>, the second best choice is <cite>easy_install</cite>:</p>
+<div class="highlight-python"><pre>pip install askbot
+easy_install askbot #if you prefer easy_install</pre>
+</div>
+<p>Both commands automatically install Askbot and the dependency packages. <cite>Pip</cite> is a significant improvement upon <cite>easy_install</cite> and is strongly recommended.</p>
+<p>If you do not have either of those tools - download the <a class="reference external" href="http://pypi.python.org/pypi/askbot/">askbot archive from PyPI</a>, unzip and untar it, then run:</p>
+<div class="highlight-python"><pre>python setup.py install #this is actually equivalent to running easy_install</pre>
+</div>
+</div>
+<div class="section" id="intend-to-customize-the-forum">
+<h2>Intend to customize the forum?<a class="headerlink" href="#intend-to-customize-the-forum" title="Permalink to this headline">¶</a></h2>
+<p>In this case the best option is to clone the code from the development repository:</p>
+<div class="highlight-python"><pre>git clone git://github.com/ASKBOT/askbot-devel.git &lt;project_name&gt;</pre>
+</div>
+<p>where <cite>&lt;project_name&gt;</cite> should be some very distinct name.</p>
+<p>Then jump into the new directory and run:</p>
+<div class="highlight-python"><pre>python setup.py develop #the develop option will not install askbot into the python site packages directory</pre>
+</div>
+</div>
+<div class="section" id="how-to-install-into-custom-directories">
+<h2>How to install into custom directories<a class="headerlink" href="#how-to-install-into-custom-directories" title="Permalink to this headline">¶</a></h2>
+<p>On the shared hosts and in some other cases it is better to install python packages in some place other than the system package directory. If that&#8217;s your situation - use the <cite>virtualenv</cite> tool:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">virtualenv</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">some</span><span class="o">/</span><span class="n">directory</span>
+</pre></div>
+</div>
+<p>Virtualenv will provide a dedicated <cite>python</cite> interpreter and <cite>pip</cite> just for that isolated environment. Both will be available within directory <cite>/path/to/some/dir/bin</cite>. Please, use them to run operations shown above.</p>
+<p>Under windows, please install
+<a class="reference external" href="http://www.codegood.com/archives/4">mysql-python windows binary package</a> manually.</p>
+<p>Most likely, by this time you will have askbot software installed. However, in some cases
+one of the dependency packages might fail to install. <a class="reference internal" href="dependencies.html#dependencies"><em>This document</em></a> will help you find those components.</p>
+<p>When you have all packages installed,
+please proceed to the <a class="reference internal" href="initial-configuration.html#compile-time-configuration"><em>initial configuration</em></a> section.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installing Askbot</a><ul>
+<li><a class="reference internal" href="#would-like-to-use-the-package-as-is">Would like to use the package as is?</a></li>
+<li><a class="reference internal" href="#intend-to-customize-the-forum">Intend to customize the forum?</a></li>
+<li><a class="reference internal" href="#how-to-install-into-custom-directories">How to install into custom directories</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Askbot Project Documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="create-database.html"
+                        title="next chapter">Create database for Askbot</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2010, Askbot Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

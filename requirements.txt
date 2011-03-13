@@ -1,0 +1,17 @@
+askbot
+# don't need the following because they're already 
+# included in the setup.py file with askbot
+#Django
+#Jinja2
+#Coffin==0.3.0
+#South>=0.7.1
+#oauth2
+#recaptcha-client
+#markdown2
+#html5lib
+#django-keyedcache
+#django-threaded-multihost
+#django-robots
+#unidecode
+#django-countries==1.0.5
+Sphinx

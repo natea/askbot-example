@@ -1,0 +1,198 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Upgrading Askbot (and other software) with git &mdash; Askbot v0.6 documentation</title>
+    <link rel="stylesheet" href="_static/traditional.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="Askbot v0.6 documentation" href="index.html" /> 
+  </head>
+  <body>
+<div class="ab-proj-header">
+    <ul>
+        <li class="first"><a href="/">Home (forum)</a>
+        <span class="sep">|</span>
+        </li>
+        
+        <li><a href="/doc/index.html">Documentation</a></li>
+        
+    </ul>
+</div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="upgrading-askbot-and-other-software-with-git">
+<span id="upgrading-with-git"></span><h1>Upgrading Askbot (and other software) with git<a class="headerlink" href="#upgrading-askbot-and-other-software-with-git" title="Permalink to this headline">¶</a></h1>
+<p>Git makes it easy to upgrade software, especially if your version is customized.</p>
+<p>Upgrading with git consists of three steps:</p>
+<ol class="arabic simple">
+<li>preparing your local repository for the merge</li>
+<li>bringing the latest version of the code onto your system</li>
+<li>merging the latest code with your work</li>
+</ol>
+<div class="section" id="preparing-the-local-repository-for-merge">
+<h2>Preparing the local repository for merge<a class="headerlink" href="#preparing-the-local-repository-for-merge" title="Permalink to this headline">¶</a></h2>
+<p>Before you can merge the new code, your local repository must be &#8220;clean&#8221; - that is any changes in the working copy - most likely the local directory must be committed to your local repository.</p>
+<p>First, see which branch is currently in the working copy and what is its state:</p>
+<div class="highlight-python"><pre>&gt; git status</pre>
+</div>
+<p>If the output says that the branch is clean, then skip the section below.</p>
+<div class="section" id="commit-any-modified-files-to-the-local-repository">
+<h3>Commit any modified files to the local repository<a class="headerlink" href="#commit-any-modified-files-to-the-local-repository" title="Permalink to this headline">¶</a></h3>
+<p>If the local branch does have modifed files,
+any of those files (or even entire directories) must be added to the repository index with command <cite>git add</cite>:</p>
+<div class="highlight-python"><pre>&gt; git add &lt;filename&gt;
+&gt; git add &lt;dirname&gt;</pre>
+</div>
+<p>If there are several modified files in the same directory, then adding directory will be more convinient.</p>
+<p>In Git system <a class="reference external" href="http://book.git-scm.com/1_the_git_index.html">index</a> is only a part of the repository - it&#8217;s a record of &#8220;scheduled&#8221; changes that must be applied in a single batch called &#8220;<a class="reference external" href="http://www.kernel.org/pub/software/scm/git/docs/git-commit.html">commit</a>&#8220;</p>
+<p>After all changed files are added to the index, the index must be committed (really added, if you will) to the repository:</p>
+<div class="highlight-python"><pre>&gt; git commit -m 'some descriptive message'</pre>
+</div>
+</div>
+<div class="section" id="jump-into-the-branch-that-you-want-to-upgrade">
+<h3>Jump into the branch that you want to upgrade<a class="headerlink" href="#jump-into-the-branch-that-you-want-to-upgrade" title="Permalink to this headline">¶</a></h3>
+<p>If it is the current branch that you want to upgrade, then you are ready for the next step, otherwise switch the branch in the working copy with <a class="reference external" href="http://www.kernel.org/pub/software/scm/git/docs/git-checkout.html">git checkout</a> command.</p>
+<p>Before checking out a branch see what branches are locally available and which one is the current:</p>
+<div class="highlight-python"><pre>&gt; git branch</pre>
+</div>
+<p>Current branch will be marked with an asterisk.</p>
+<p>(Note that adding extra arguments the <a class="reference external" href="http://www.kernel.org/pub/software/scm/git/docs/git-branch.html">git branch</a> command will significantly modify its meaning, for example it can create or delete branches)</p>
+<p>Now check out the branch you want to merge the new code into:</p>
+<div class="highlight-python"><pre>&gt; git checkout &lt;branchname&gt;</pre>
+</div>
+<p>(Example below assumes that branchname is &#8216;master&#8217;).</p>
+</div>
+</div>
+<div class="section" id="bring-the-latest-code-into-your-repository">
+<h2>Bring the latest code into your repository<a class="headerlink" href="#bring-the-latest-code-into-your-repository" title="Permalink to this headline">¶</a></h2>
+<p>Now to bring in the fresh code from some public repository (for example public &#8220;master&#8221; branch hosted on <a class="reference external" href="http://github.com/ASKBOT/askbot-devel">github</a>), run:</p>
+<div class="highlight-python"><pre>&gt; git fetch origin master:master-github</pre>
+</div>
+<p>In the command above (<a class="reference external" href="http://www.kernel.org/pub/software/scm/git/docs/git-fetch.html">git fetch</a>), <cite>origin</cite> is the name of the repository (also called &#8220;remote&#8221; repository). By default <cite>origin</cite> repository is the one that you have used to originally <a class="reference external" href="http://www.kernel.org/pub/software/scm/git/docs/git-clone.html">clone</a> into your system.</p>
+<p>The last part of the command <cite>master:master-github</cite> tells that you want to take stuff from branch <cite>master</cite> on the <cite>origin</cite> repository and put it into branch <cite>master-github</cite> on your local repository.</p>
+</div>
+<div class="section" id="merge-the-upgrade-into-your-local-repository">
+<h2>Merge the upgrade into your local repository<a class="headerlink" href="#merge-the-upgrade-into-your-local-repository" title="Permalink to this headline">¶</a></h2>
+<p>To merge content of one branch into another, run <a class="reference external" href="http://www.kernel.org/pub/software/scm/git/docs/git-merge.html">git merge</a> command:</p>
+<div class="highlight-python"><pre>&gt; git merge github-master
+Auto-merging askbot/models/__init__.py
+CONFLICT (content): Merge conflict in askbot/models/__init__.py
+Removing askbot/utils/time.py
+Auto-merging askbot/views/readers.py
+Automatic merge failed; fix conflicts and then commit the result.</pre>
+</div>
+<p>The command <cite>git merge github-master</cite> means that you indended to merge content
+of your local branch <cite>github-master</cite> into the currently checked out branch.</p>
+<p>Often, merge will go smoothly, but if you and someone else have edited the same file approximately on the same place, automatic merge will not work on that file. For example the output above tells that there was a &#8220;conflict&#8221; in file <cite>askbot/models/__init__.py</cite>.</p>
+<p>At any time, e.g. during resolving conflicts you can always check which files still have them with <cite>git status</cite> command:</p>
+<div class="highlight-python"><pre>&gt; git status
+askbot/models/__init__.py: needs merge
+# On branch master
+# Your branch is ahead of 'origin/master' by 91 commits.
+#
+# Changes to be committed:
+#   (use "git reset HEAD &lt;file&gt;..." to unstage)
+#
+#   new file:   askbot/bin/show_profile_stats.py
+#   modified:   askbot/doc/source/index.rst
+#   new file:   askbot/locale/fi/LC_MESSAGES/django.mo
+#   modified:   askbot/locale/fi/LC_MESSAGES/django.po
+#   new file:   askbot/migrations/0016_auto__del_validationhash.py
+#   modified:   askbot/models/question.py
+#   modified:   askbot/models/user.py
+#   modified:   askbot/skins/default/media/js/com.cnprog.i18n.js
+#   modified:   askbot/skins/default/media/js/org.askbot.output-words.js
+#   modified:   askbot/skins/default/templates/email_base.html
+#   modified:   askbot/skins/default/templates/question.html
+#   modified:   askbot/skins/default/templates/question_list.html
+#   modified:   askbot/skins/default/templates/user_edit.html
+#   modified:   askbot/utils/decorators.py
+#   deleted:    askbot/utils/time.py
+#   modified:   askbot/views/readers.py
+#
+# Changed but not updated:
+#   (use "git add &lt;file&gt;..." to update what will be committed)
+#   (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+#
+#   unmerged:   askbot/models/__init__.py</pre>
+</div>
+<p>If you have merge conflicts - resolve them and commit them into the repository.</p>
+<p>To resolve conflicts, open the file in question and find lines that start with <cite>&lt;&lt;&lt;</cite>. Conflict areas are demarcated by <cite>&lt;&lt;&lt;</cite>, <cite>====</cite> and <cite>&gt;&gt;&gt;</cite> patterns.</p>
+<p><cite>====</cite> divides the conflicting versions.</p>
+<p>When resolving merge conflicts your options are: accept one of the versions or come up with some compromize.</p>
+<p>Decide what is the best course of action, fix the code, remove the conflict demarcation lines and add file to the index with <a class="reference external" href="http://www.kernel.org/pub/software/scm/git/docs/git-add.html">git add</a>:</p>
+<div class="highlight-python"><pre>&gt; git add askbot/models/__init__.py</pre>
+</div>
+<p>At this point it is best not to use wholsale add via a directory (like <cite>git add askbot</cite>)  - because you don&#8217;t want to accidentally add other conflicting files into the index.</p>
+<p>Once all conflicts are resolved, run the <a class="reference external" href="http://www.kernel.org/pub/software/scm/git/docs/git-commit.html">git commit</a> command:</p>
+<div class="highlight-python"><pre>&gt; git commit -m 'merged with the public master branch'</pre>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Upgrading Askbot (and other software) with git</a><ul>
+<li><a class="reference internal" href="#preparing-the-local-repository-for-merge">Preparing the local repository for merge</a><ul>
+<li><a class="reference internal" href="#commit-any-modified-files-to-the-local-repository">Commit any modified files to the local repository</a></li>
+<li><a class="reference internal" href="#jump-into-the-branch-that-you-want-to-upgrade">Jump into the branch that you want to upgrade</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bring-the-latest-code-into-your-repository">Bring the latest code into your repository</a></li>
+<li><a class="reference internal" href="#merge-the-upgrade-into-your-local-repository">Merge the upgrade into your local repository</a></li>
+</ul>
+</li>
+</ul>
+
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2010, Askbot Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

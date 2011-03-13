@@ -1,0 +1,119 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Initialization and upgrade of the database for Askbot &mdash; Askbot v0.6 documentation</title>
+    <link rel="stylesheet" href="_static/traditional.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="Askbot v0.6 documentation" href="index.html" />
+    <link rel="next" title="Deploying Askbot" href="deployment.html" />
+    <link rel="prev" title="Initial Configuration of Askbot" href="initial-configuration.html" /> 
+  </head>
+  <body>
+<div class="ab-proj-header">
+    <ul>
+        <li class="first"><a href="/">Home (forum)</a>
+        <span class="sep">|</span>
+        </li>
+        
+        <li><a href="/doc/index.html">Documentation</a></li>
+        
+    </ul>
+</div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="initialization-and-upgrade-of-the-database-for-askbot">
+<span id="initialize-database-tables"></span><h1>Initialization and upgrade of the database for Askbot<a class="headerlink" href="#initialization-and-upgrade-of-the-database-for-askbot" title="Permalink to this headline">¶</a></h1>
+<p>When you install Askbot the first time and any time you upgrade the software, run these two commands:</p>
+<div class="highlight-python"><pre>python manage.py syncdb</pre>
+</div>
+<p>When you will be suggested to create a superuser, answer <strong>no</strong>.</p>
+<p>Then run:</p>
+<div class="highlight-python"><pre>python manage.py migrate askbot
+python manage.py migrate django_authopenid #embedded login application</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When upgrading - do not skip to back up the database before proceeding!!!
+Things can break and it is better to be safe than sorry. Even better -
+do run two installations of your project - one for production deployment
+and the second one - for testing the upgrade. When you are sure that
+your upgrade works, just switch the testing installation for the former production one.</p>
+</div>
+<p>Now run the Django development server and check that everything works:</p>
+<div class="highlight-python"><pre>python manage.py runserver `hostname -i`:8000 #or use some other port number &gt; 1024</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><cite>hostname -i</cite> is a Unix command returning the IP address of your system, you can also type
+the IP manually or replace it with word <cite>localhost</cite> if you are installing askbot
+on a local machine.</p>
+</div>
+<p>Finally, register at the site and turn yourself into a superuser by running:</p>
+<div class="highlight-python"><pre>python manage.py add_admin 1</pre>
+</div>
+<p>Here number 1 is the numeric id of the first user, enter a different number, if it is indeed different.</p>
+<p>Your basic installation is now complete. Many settings can be
+<a class="reference internal" href="run-time-configuration.html#run-time-configuration"><em>changed at runtime</em></a> by following url <cite>/settings</cite>.</p>
+<p>If you choose to host a real website, please read
+section <a class="reference internal" href="deployment.html#deployment"><em>Deploying Askbot</em></a>.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="initial-configuration.html"
+                        title="previous chapter">Initial Configuration of Askbot</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="deployment.html"
+                        title="next chapter">Deploying Askbot</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2010, Askbot Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

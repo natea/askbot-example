@@ -1,0 +1,109 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Initial Configuration of Askbot &mdash; Askbot v0.6 documentation</title>
+    <link rel="stylesheet" href="_static/traditional.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="Askbot v0.6 documentation" href="index.html" />
+    <link rel="next" title="Initialization and upgrade of the database for Askbot" href="initialize-database-tables.html" />
+    <link rel="prev" title="Create database for Askbot" href="create-database.html" /> 
+  </head>
+  <body>
+<div class="ab-proj-header">
+    <ul>
+        <li class="first"><a href="/">Home (forum)</a>
+        <span class="sep">|</span>
+        </li>
+        
+        <li><a href="/doc/index.html">Documentation</a></li>
+        
+    </ul>
+</div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="initial-configuration-of-askbot">
+<span id="compile-time-configuration"></span><h1>Initial Configuration of Askbot<a class="headerlink" href="#initial-configuration-of-askbot" title="Permalink to this headline">¶</a></h1>
+<p>While most configuration settings for askbot can be done at any time <a class="reference internal" href="run-time-configuration.html#run-time-configuration"><em>through the web-interface</em></a>, some manipulations on the server are still necessary.</p>
+<p>When you are installing askbot the first time you will need to initialize the site setup files by typing:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">startforum</span>
+</pre></div>
+</div>
+<p>and answering the questions.</p>
+<p>The startforum script will attempt to create necessary directories and copy files.</p>
+<p>If you are creating a brand new Django project, then you will need to edit file <a class="reference external" href="http://github.com/ASKBOT/askbot-devel/blob/master/askbot/setup_templates/settings.py">settings.py</a></p>
+<p>In the case you are adding askbot to an existing Django project, you will need to
+merge askbot files <a class="reference external" href="http://github.com/ASKBOT/askbot-devel/blob/master/askbot/setup_templates/settings.py">settings.py</a> and <a class="reference external" href="http://github.com/ASKBOT/askbot-devel/blob/master/askbot/setup_templates/urls.py">urls.py</a> into your project files manually.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Files <a class="reference external" href="http://github.com/ASKBOT/askbot-devel/blob/master/askbot/setup_templates/settings.py">settings.py</a> and <a class="reference external" href="http://github.com/ASKBOT/askbot-devel/blob/master/askbot/setup_templates/urls.py">urls.py</a> may also need to be touched up
+when you upgrate the software, because new versions may bring
+new dependencies and add new site urls.</p>
+</div>
+<p>Within settings.py, at the very minimum you will need to provide correct values to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">DATABASE_NAME</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+<span class="n">DATABASE_USER</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+<span class="n">DATABASE_PASSWORD</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+</pre></div>
+</div>
+<p>within single quotes - login credentials to your mysql database.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="create-database.html"
+                        title="previous chapter">Create database for Askbot</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="initialize-database-tables.html"
+                        title="next chapter">Initialization and upgrade of the database for Askbot</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2010, Askbot Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

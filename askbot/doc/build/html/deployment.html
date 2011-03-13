@@ -1,0 +1,200 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Deploying Askbot &mdash; Askbot v0.6 documentation</title>
+    <link rel="stylesheet" href="_static/traditional.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="Askbot v0.6 documentation" href="index.html" />
+    <link rel="next" title="Import other forums into Askbot" href="import-data.html" />
+    <link rel="prev" title="Initialization and upgrade of the database for Askbot" href="initialize-database-tables.html" /> 
+  </head>
+  <body>
+<div class="ab-proj-header">
+    <ul>
+        <li class="first"><a href="/">Home (forum)</a>
+        <span class="sep">|</span>
+        </li>
+        
+        <li><a href="/doc/index.html">Documentation</a></li>
+        
+    </ul>
+</div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="deploying-askbot">
+<span id="deployment"></span><h1>Deploying Askbot<a class="headerlink" href="#deploying-askbot" title="Permalink to this headline">¶</a></h1>
+<p>Deploying askbot (assuming that it is already installed) entails:</p>
+<ul class="simple">
+<li>setting correct file access permissions</li>
+<li>configuring the webserver to work with your application</li>
+</ul>
+<p>This document currently explains the configuration under Apache and <a class="reference external" href="http://code.google.com/p/modwsgi/">mod_wsgi</a>.</p>
+<div class="section" id="setting-up-file-access-permissions">
+<h2>Setting up file access permissions<a class="headerlink" href="#setting-up-file-access-permissions" title="Permalink to this headline">¶</a></h2>
+<p>Webserver process must be able to write to the following locations within your project:</p>
+<div class="highlight-python"><pre>log/
+askbot/upfiles</pre>
+</div>
+<p>If you know user name or the group name under which the webserver runs,
+you can make those directories writable by setting the permissons
+accordingly:</p>
+<p>For example, if you are using Linux installation of apache webserver running under
+group name &#8216;apache&#8217; you could do the following:</p>
+<div class="highlight-python"><pre>cd /path/to/django-project
+cd .. #go one level up
+chown -R yourlogin:apache django-project
+chmod -R g+w django-project/askbot/upfiles
+chmod -R g+w django-project/log</pre>
+</div>
+<p>If your account somehow limits you from running such commands - please consult your
+system administrator.</p>
+</div>
+<div class="section" id="installation-under-apache-mod-wsgi">
+<h2>Installation under Apache/mod_wsgi<a class="headerlink" href="#installation-under-apache-mod-wsgi" title="Permalink to this headline">¶</a></h2>
+<p>Apache/mod_wsgi combination is the only type of deployment described in this
+document at the moment. <a class="reference external" href="http://code.google.com/p/modwsgi/">mod_wsgi</a> is currently the most resource efficient
+apache handler for the Python web applications.</p>
+<p>The main wsgi script is in the file <a class="reference external" href="http://github.com/ASKBOT/askbot-devel/blob/master/askbot/setup_templates/django.wsgi">django.wsgi</a>
+it does not need to be modified</p>
+<div class="section" id="configure-webserver">
+<h3>Configure webserver<a class="headerlink" href="#configure-webserver" title="Permalink to this headline">¶</a></h3>
+<p>Settings below are not perfect but may be a good starting point:</p>
+<div class="highlight-python"><pre>#NOTE: the directory paths used here may be adjusted
+
+#the following two directories must be both readable and writable by apache
+WSGISocketPrefix /path/to/socket/sock
+WSGIPythonEggs /var/python/eggs
+
+#the following directory must be readable by apache
+WSGIPythonHome /usr/local
+
+#NOTE: all urs below will need to be adjusted if
+#settings.FORUM_SCRIPT_ALIAS is anything other than empty string (e.g. = 'forum/')
+#this allows "rooting" forum at http://example.com/forum, if you like
+
+#replace with 127.0.0.1 with real IP address
+&lt;VirtualHost 127.0.0.1:80&gt;
+     ServerAdmin you@example.com
+     DocumentRoot /path/to/django-project
+     ServerName example.come
+
+     #aliases to serve static media directly
+     #will probably need adjustment
+     Alias /m/ /usr/local/lib/python2.6/site-packages/askbot/skins/default/media/
+     Alias /upfiles/ /path/to/django-project/askbot/upfiles/
+     Alias /admin/media/ /usr/local/lib/python2.6/site-packages/django/contrib/admin/media/
+     &lt;DirectoryMatch "/path/to/django-project/askbot/skins/([^/]+)/media"&gt;
+        Order deny,allow
+        Allow from all
+     &lt;/DirectoryMatch&gt;
+     &lt;Directory "/path/to/django-project/askbot/upfiles"&gt;
+        Order deny,allow
+        Allow from all
+     &lt;/Directory&gt;
+     #must be a distinct name within your apache configuration
+     WSGIDaemonProcess askbot2
+     WSGIProcessGroup askbot2
+     WSGIScriptAlias / /path/to/django-project/django.wsgi
+     #make all admin stuff except media go through secure connection
+     &lt;LocationMatch "/admin(?!/media)"&gt;
+     RewriteEngine on
+         RewriteRule /admin(.*)$ https://example.com/admin$1 [L,R=301]
+         &lt;/LocationMatch&gt;
+     CustomLog /var/log/httpd/askbot/access_log common
+     ErrorLog /var/log/httpd/askbot/error_log
+     LogLevel debug
+&lt;/VirtualHost&gt;
+#again, replace the IP address
+&lt;VirtualHost 127.0.0.1:443&gt;
+     ServerAdmin you@example.com
+     DocumentRoot /path/to/django-project
+     ServerName example.com
+     &lt;LocationMatch "^(?!/admin)"&gt;
+         RewriteEngine on
+         RewriteRule django.wsgi(.*)$ http://example.com$1 [L,R=301]
+     &lt;/LocationMatch&gt;
+     SSLEngine on
+     #your SSL keys
+     SSLCertificateFile /etc/httpd/ssl.crt/server.crt
+     SSLCertificateKeyFile /etc/httpd/ssl.key/server.key
+     Alias /admin/media/ /usr/local/lib/python2.6/site-packages/django/contrib/admin/media/
+     WSGIScriptAlias / /path/to/django-project/django.wsgi
+     CustomLog /var/log/httpd/askbot/access_log common
+     ErrorLog /var/log/httpd/askbot/error_log
+&lt;/VirtualHost&gt;</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Deploying Askbot</a><ul>
+<li><a class="reference internal" href="#setting-up-file-access-permissions">Setting up file access permissions</a></li>
+<li><a class="reference internal" href="#installation-under-apache-mod-wsgi">Installation under Apache/mod_wsgi</a><ul>
+<li><a class="reference internal" href="#configure-webserver">Configure webserver</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="initialize-database-tables.html"
+                        title="previous chapter">Initialization and upgrade of the database for Askbot</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="import-data.html"
+                        title="next chapter">Import other forums into Askbot</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2010, Askbot Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>
