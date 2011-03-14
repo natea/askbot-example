@@ -1,9 +1,9 @@
-askbot
+-e git+git://github.com/natea/askbot-devel.git#egg=askbot
 # don't need the following because they're already 
 # included in the setup.py file with askbot
 #Django
 #Jinja2
-#Coffin==0.3.0
+#Coffin==0.3.4
 #South>=0.7.1
 #oauth2
 #recaptcha-client
